@@ -1,5 +1,4 @@
-# WoC_6.0_Systems_Programming_Divyam
-WYAG (Write yourself a Git)
+# WYAG (Write yourself a Git)
 
 # Task 1 : File Organizer with Python
 
@@ -18,3 +17,8 @@ This Python script harnesses the power of `os`, `shutil`, and `sys` modules to a
 1. Clone the repository:
    ```bash
    git clone [https://github.com/your_username/file-organizer](https://github.com/your_username/file-organizer)
+
+2. Navigate to the correct folder and Run the python file:
+   ```bash
+   python task1
+   Enter the directory : testTask1
