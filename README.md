@@ -1,6 +1,12 @@
 # WYAG (Write yourself a Git)
 
-# Task 1 : File Organizer with Python
+## Task 1 : File Organizer with Python
+
+## Task 2 : Directory copier and making json file for all files in a diercotry
+
+1. Run the command to make json file , make directory copy and update json file
+```bash
+python task2.py testTask2
 
 **Effortlessly organize your files into subdirectories based on their extensions!**
 
