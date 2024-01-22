@@ -4,8 +4,17 @@
 
 ## Task 2 : Directory copier and making json file for all files in a diercotry
 
+## Main.py: This script implements some of the commands of git 
+
+Commands implemented till now : init , add , status
+
+1. To get help with each command type :
+   ```bash
+   python main.py
+
+
 1. Run the command to make json file , make directory copy and update json file
-```bash
+   ```bash
 python task2.py testTask2
 
 **Effortlessly organize your files into subdirectories based on their extensions!**
