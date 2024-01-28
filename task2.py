@@ -32,7 +32,6 @@ make_json()
 def copy_directory():
     for root, directories, files in os.walk(directory_path):
         for filename in files:
-            
             file_path = os.path.join(root, filename)
             with open(file_path, "r") as file:  # Open the file in read mode
                 contents = file.read()  # Read the entire contents into a string

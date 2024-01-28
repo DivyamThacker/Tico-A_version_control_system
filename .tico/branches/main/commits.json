@@ -1,0 +1,34 @@
+{
+    "a094ae939c9cd6c2fdc31b7b211d95b8": {
+        "message": "This is the root commit of main branch",
+        "author": "Divyam",
+        "parent": null,
+        "timestamp": "2024-01-28 18:27:27",
+        "files": {}
+    },
+    "00625f0e6bdcdf1a4464f4930b05abdc": {
+        "message": "Initial Commit",
+        "author": "Divyam",
+        "parent": "a094ae939c9cd6c2fdc31b7b211d95b8",
+        "timestamp": "2024-01-28 18:48:26",
+        "files": {}
+    },
+    "ee8626655fbee3a9f516d07432d443e6": {
+        "message": "add test file",
+        "author": "Divyam",
+        "parent": "00625f0e6bdcdf1a4464f4930b05abdc",
+        "timestamp": "2024-01-28 19:18:05",
+        "files": {
+            "testfile.txt": "This is a test file. Now I have modified this test file. Again."
+        }
+    },
+    "ee8626655fbee3a9f516d07432d443e8": {
+        "message": "add test file",
+        "author": "Divyam",
+        "parent": "ee8626655fbee3a9f516d07432d443e6",
+        "timestamp": "2024-01-28 19:18:05",
+        "files": {
+            "testfile.txt": "This is a test file. Now I have modified this test file. Again."
+        }
+    }
+}
