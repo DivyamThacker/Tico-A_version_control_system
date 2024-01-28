@@ -4,7 +4,7 @@
 
 ## Task 2 : Directory copier and making json file for all files in a diercotry
 
-## Main.py: This script implements some of the commands of git 
+## ticolib.py: This script implements some of the commands of git 
 
 Commands implemented till now : init , add , status
 
@@ -15,7 +15,7 @@ Commands implemented till now : init , add , status
 
 1. Run the command to make json file , make directory copy and update json file
    ```bash
-python task2.py testTask2
+   python task2.py testTask2
 
 **Effortlessly organize your files into subdirectories based on their extensions!**
 
