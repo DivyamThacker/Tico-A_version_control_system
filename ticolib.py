@@ -1,4 +1,4 @@
-import argparse, os , sys ,datetime, hashlib ,json
+import argparse, os , sys ,datetime, hashlib ,json, base64, shutil
 
 argparser = argparse.ArgumentParser(description="This is the Main program that tracks your files :)")
 argsubparsers = argparser.add_subparsers(title="Commands", dest="command")
@@ -16,7 +16,27 @@ def main(argv=sys.argv[1:]):
         case "push" : cmd_push(args)
         case "create_user": cmd_create_user(args)
         case "set_user": cmd_set_user(args)
+        case "show_user" : cmd_show_user(args)
+        case "checkout" : cmd_checkout(args)
+        case "log" : cmd_log(args)
+        case "help": welcome(args)
         case _ : print("Bad Command")
+        
+def welcome():
+    print("tico help - to get help of the available commands")
+    print("tico init - Initialize a new Tico repository")
+    print("tico add <file> - Add a file to the index")
+    print("tico status - to see status")
+    print("tico commit -m <message> - Commit changes with a message")
+    print("tico rmcommit - remove last commit")
+    print("tico rmadd <file> - remove a file from the index")
+    print("tico log - Display commit log")
+    print("tico checkout <commit> - Checkout a specific commit")
+    print("tico show_user  - to see present user")
+    print("tico create_user  - to create new user")
+    print("tico  set_user <username> - to change user")
+    print("tico push <path> - to push your file to another folder")
+    print("Created by - Divyam Thacker")
 
 argsp = argsubparsers.add_parser("init", help="Initialize a new, empty repository.")
 
@@ -231,20 +251,26 @@ class Commit:
         self.parent = parent
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Capture creation time
         self.files = {}  # Store a dictionary of changed files and their contents
+        self.file_hash={} #store a dictionary of filename and its md5 hash
+        self.add_files()
 
     def add_files(self, json_file_path = ".tico/branches/main/index.json"): #adds tracked files that are in index.json
         with open(json_file_path, "r") as f:
             all_files = json.load(f)
-            all_files =  list(all_files.keys())
+            all_file_keys =  list(all_files.keys())
         files = {}    
-        for file in all_files:
+        for file in all_file_keys:
+            self.file_hash[file] = all_files[file]
             files[file] = self.read_file(file)
         self.files = files     
 
     def read_file(self, file_path):
         with open(file_path, "r") as f:
             content = f.read()
-        return content    
+            content_bytes = str(content).encode("utf-8")  # Use utf-8 for wider character support
+            base64_bytes = base64.b64encode(content_bytes) 
+            base64_string = base64_bytes.decode("ascii") 
+        return base64_string    
         
     def get_commit_info(self):
         return f"Message: {self.message}\nAuthor: {self.author}\nTimestamp: {self.timestamp}"
@@ -255,7 +281,7 @@ class Commit:
         return child
 
     def __dict__(self):
-        return {"message": self.message, "author": self.author, "parent":self.parent, "timestamp":self.timestamp,
+        return {"message": self.message, "author": self.author, "parent":self.parent, "timestamp":self.timestamp, "file_hash":self.file_hash,
                 "files":self.files}
         
 def create_root_commit():
@@ -323,13 +349,13 @@ def cmd_rmcommit(args):
         content = json.load(file)
         last_key = list(content.keys())[-1]
     if args.hash:
-        hash = args.hash
-        parent_hash = content[hash]["parent"]
-        for key, value in content.items():
-            if key==hash:
-                flag=1
-            if flag==1:
-                value["parent"] = parent_hash    
+        hash = args.hash  #UnComment the below code if you want to update the parent of commit which has removed commit as its parent commit
+        # parent_hash = content[hash]["parent"]
+        # for key, value in content.items():
+        #     if key==hash:
+        #         flag=1
+        #     if flag==1:
+        #         value["parent"] = parent_hash    
         del content[hash]
     else :    
         del content[last_key]
@@ -375,3 +401,111 @@ def cmd_push(args):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
             f.write(file_content) 
+
+def cmd_show_user(args):
+    if (get_current_author()):
+        print(get_current_author())
+    else:
+        print("Failed to get the current author")     
+                   
+def base64_decode(string):
+    base64_bytes = string.encode("ascii")
+
+    # Handle missing padding if necessary
+    missing_padding = len(base64_bytes) % 4
+    if missing_padding:
+        base64_bytes += b'=' * (4 - missing_padding)
+
+    try:
+        sample_string_bytes = base64.b64decode(base64_bytes)
+        sample_string = sample_string_bytes.decode("utf-8")  # Use utf-8 for decoding
+        return sample_string
+    except :
+        print("Error decoding Base64 string:")
+        return None  # Or handle the error differently
+    
+argsp = argsubparsers.add_parser("checkout", help="To check the data in a particular commit")
+argsp.add_argument(dest="hash", help="specify the hash of the commit you want to checkout")
+argsp.add_argument(dest="directory_path",nargs="?", default=".", help="specify the directory path where you want to checkout the commit files")
+argsp.add_argument("--force",dest="delFlag", default="false", action="store_true", help="This flag removes all other files that are in the mentioned directory and only files that are mentioned in commit remains")
+
+def cmd_checkout(args):
+    hash = args.hash
+    directory_path= args.directory_path
+    json_file_path=".tico/branches/main/commits.json"
+    delFlag = args.delFlag
+    with open(json_file_path, "r") as f:
+        my_dict = json.load(f)
+    if not hash in my_dict.keys():
+        print("There is no existing commit with the specified hash")
+        return
+    files = my_dict[hash]["files"]
+    if delFlag:
+        shutil.rmtree(os.path.join(".", directory_path))
+    for filepath , file_encoded_content in files.items():
+        file_path = os.path.join(".",directory_path, filepath) #currently works only if folder is in sub directory
+        folder_path = os.path.dirname(file_path)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path, exist_ok=True)
+        file_content = base64_decode(file_encoded_content)
+        try:
+            with open(file_path, "w") as f:
+                f.write(file_content)
+        except PermissionError as e:    
+            print("Error writing to file:", e)
+            # Handle the error appropriately, e.g., prompt for elevated privileges or suggest alternative actions
+
+
+        
+    
+
+def print_commit(key, value):
+        print(f"\nCommit: {key}\n")
+        print(f"Author: {value["author"]}\n")
+        print(f"Time_stamp: {value["timestamp"]}\n")
+        print(f"Message: {value["message"]}\n")
+        if "file_hash" in value.keys():
+            all_files_hash  = value["file_hash"]
+            if len(all_files_hash)==0:
+                print("There were no files in this commit\n")
+            else:
+                print(f"All files with its corressponding hashes :\n")    
+            for filename, filehash in all_files_hash.items():
+                print(f"{filename}: {filehash}")
+        all_files = list(value["files"].keys())
+        if len(all_files)==0:
+            print("\nThere were no files in this commit\n")
+        else:
+            print(f"\nAll files with its corressponding content :\n")    
+            for file in all_files:
+                content = base64_decode(value["files"][file])
+                print(f"{file} : {content}")
+        print("\n\n")        
+                    
+        
+        
+
+argsp = argsubparsers.add_parser("log", help="Log out the previous commits you did")
+
+argsp.add_argument(dest="count",action="store",   nargs="?", help="Specify the count of commits you want to see the meta data of")
+
+def cmd_log(args):
+    count = int(args.count)
+    file_path = ".tico/branches/main/commits.json"
+    with open(file_path, "r") as f:
+        my_dict = json.load(f)
+        dic_length = len(my_dict)
+    if count==None:
+        #specify all commits
+        cnt = dic_length-1
+    else:
+        if count==0:
+            print("NO commits made yet")
+            return
+        cnt = min(dic_length-1, count)
+    for key, value in reversed(my_dict.items()):
+        if (cnt<=0): return
+        else :
+            print_commit(key, value)
+            cnt=cnt-1
+        

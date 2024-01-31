@@ -12,3 +12,12 @@ tico
 
 #Text file
 things_to_add.txt
+test*
+
+
+# Build Stuff
+infos.txt
+Tico.iss
+main.spec
+build 
+dist

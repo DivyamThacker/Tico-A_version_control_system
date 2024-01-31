@@ -6,29 +6,28 @@
         "timestamp": "2024-01-28 18:27:27",
         "files": {}
     },
-    "00625f0e6bdcdf1a4464f4930b05abdc": {
-        "message": "Initial Commit",
+    "44ebce9cced8f22cae34577fbf8a7f25": {
+        "message": "Test commit 2 for base64 encoding bla bla",
         "author": "Divyam",
-        "parent": "a094ae939c9cd6c2fdc31b7b211d95b8",
-        "timestamp": "2024-01-28 18:48:26",
-        "files": {}
-    },
-    "ee8626655fbee3a9f516d07432d443e6": {
-        "message": "add test file",
-        "author": "Divyam",
-        "parent": "00625f0e6bdcdf1a4464f4930b05abdc",
-        "timestamp": "2024-01-28 19:18:05",
+        "parent": "03f36def1046163687f3be76cdee5e66",
+        "timestamp": "2024-01-30 22:50:51",
+        "file_hash": {
+            "testfile3.txt": "99e05ee9ca287ae86befffa6577fd80e"
+        },
         "files": {
-            "testfile.txt": "This is a test file. Now I have modified this test file. Again."
+            "testfile3.txt": "VGhpcyBpcyB0ZXN0IGZpbGUgMyBmb3IgdGVzdGluZyBsb2cgY29tbWFuZC4="
         }
     },
-    "ee8626655fbee3a9f516d07432d443e8": {
-        "message": "add test file",
+    "97ca714eab8ef9e96cd437378ae0d318": {
+        "message": "testfile 4 for log command",
         "author": "Divyam",
-        "parent": "ee8626655fbee3a9f516d07432d443e6",
-        "timestamp": "2024-01-28 19:18:05",
+        "parent": "44ebce9cced8f22cae34577fbf8a7f25",
+        "timestamp": "2024-01-30 23:10:36",
+        "file_hash": {
+            "testfile4.txt": "99e05ee9ca287ae86befffa6577fd80d"
+        },
         "files": {
-            "testfile.txt": "This is a test file. Now I have modified this test file. Again."
+            "testfile4.txt": "VEhpcyBpcyBhIG5ldyB0ZXh0IGZpbGUgdGVzdCBmaWxlIHRvIHZlcmlmeSBsb2cgY29tbWFuZCA="
         }
     }
 }

@@ -1,17 +1,20 @@
 # WYAG (Write yourself a Git)
 
-## Task 1 : File Organizer with Python
 
-## Task 2 : Directory copier and making json file for all files in a diercotry
+## To Download Tico - version control System, Run the ticoSetup.exe file.
 
 ## ticolib.py: This script implements some of the commands of git 
 
-Commands implemented : init , add , status, commit, rmcommit, rmadd, push, create_user, set_user
+Commands implemented : init , add , status, commit, rmcommit, rmadd, push, create_user, set_user, help, checkout, log
+
 
 1. To get help with each command type :
    ```bash
    python main.py
 
+## Task 1 : File Organizer with Python
+
+## Task 2 : Directory copier and making json file for all files in a diercotry
 
 1. Run the command to make json file , make directory copy and update json file
    ```bash
@@ -33,7 +36,6 @@ This Python script harnesses the power of `os`, `shutil`, and `sys` modules to a
    ```bash
    git clone [https://github.com/your_username/file-organizer](https://github.com/your_username/file-organizer)
 
-2. Navigate to the correct folder and Run the python file:
+2. Navigate to the correct folder and Run the python file to get help about the commands:
    ```bash
-   python task1
-   Enter the directory : testTask1
+   python main.py
