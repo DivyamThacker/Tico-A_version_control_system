@@ -21,3 +21,6 @@ Tico.iss
 main.spec
 build 
 dist
+
+#previous Build
+prevBuild
