@@ -5,7 +5,7 @@
 
 ## ticolib.py: This script implements some of the commands of git 
 
-Commands implemented : init , add , status, commit, rmcommit, rmadd, push, create_user, set_user, help, checkout, log
+Commands implemented : init , add , status, commit, rmcommit, rmadd, push, create_user, set_user, help, checkout, log, revert
 
 
 1. To get help with each command type :

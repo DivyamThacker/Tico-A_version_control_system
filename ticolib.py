@@ -277,28 +277,25 @@ def get_current_author(directory_path="."):
     return lines[-1].split()[-1]    
 
 class Commit:
-    def __init__(self, message, author, parent=None):
+    def __init__(self, message, author, parent=None, modified_files=None):
         self.message = message
         self.author = author
         self.parent = parent
+        self.modified_files = modified_files
         self.timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Capture creation time
         self.files = {}  # Store a dictionary of changed files and their contents
         self.file_hash={} #store a dictionary of filename and its md5 hash
         self.add_files()
 
     def add_files(self, json_file_path = ".tico/branches/main/index.json"): #adds tracked files that are in index.json
-        # dont add files, rather create index.json file if it is a root commit
-        # if self.parent == None:
-        #     files = ["/.tico/branches/main/index.json", "/.tico/branches/main/added.json"]
-        #     for file in files:
-        #         with open (json_file_path, "w") as f:
-        #             pass
         json_file_path = os.path.join(".",json_file_path)
         with open(json_file_path, "r") as f:
             all_files = json.load(f)
             all_file_keys =  list(all_files.keys())
         files = {}    
         for file in all_file_keys:
+            if self.modified_files and file in self.modified_files:
+                continue  # Skip files already in modified_files
             self.file_hash[file] = all_files[file]
             files[file] = self.read_file(file)
         self.files = files     
@@ -355,10 +352,9 @@ def empty_tracked_files():
             f.write("{}")
  
 def cmd_commit(args):
-    # modified_files = calculate_status(doPrint=False)[2]
-    # if len(modified_files) >0:
-    #     print("Commit Failed, Please add the modified files using 'tico add' before commiting them.")
-    #     return
+    modified_files = calculate_status(doPrint=False)[2]
+    if len(modified_files) >0:
+        print("There are modified files whose changes are not tracked, do 'tico add <filename>' to track it.")
     calculate_status(deleteFromIndex=True, doPrint=False)
     file_path = ".tico/branches/main/commits.json"
     if not args.messageFlag:
@@ -367,7 +363,7 @@ def cmd_commit(args):
         message = args.message
     author = get_current_author()
     parent = get_last_commit()    
-    commit  = Commit(message,author,parent)
+    commit  = Commit(message,author,parent, modified_files=modified_files)
     commit.add_files()
     data = commit.__dict__()
     md5_hash = hashlib.md5()
