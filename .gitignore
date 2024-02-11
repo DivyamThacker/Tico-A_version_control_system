@@ -18,6 +18,7 @@ test*
 # Build Stuff
 infos.txt
 Tico.iss
+TicoSetup.iss
 main.spec
 build 
 dist
