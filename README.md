@@ -1,7 +1,7 @@
 # WYAG (Write yourself a Git)
 
 
-## To Download Tico - version control System, Run the ticoSetup.exe file.
+## To Download Tico - version control System, Run the TicoSetup.exe file.
 
 ## ticolib.py: This script implements some of the commands of git 
 

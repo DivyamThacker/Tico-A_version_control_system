@@ -22,6 +22,7 @@ TicoSetup.iss
 main.spec
 build 
 dist
+BuildStuff
 
 #previous Build
 prevBuild

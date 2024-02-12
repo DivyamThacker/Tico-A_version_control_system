@@ -183,13 +183,14 @@ def cmd_add(args):
         for root, _, files in os.walk(args.path):
             for filename in files:
                 filepath = os.path.join(root, filename)
-                if (len(filepath)>6 and filepath[:6] == ".tico"):
-                    print(f"Adding {filepath} to tracking files Failed because it is inside '.tico' directory")
+                filepath= filepath[2:]
+                if not filepath[0].isalpha():
+                    print(f"Adding Failed : {filepath} because it is inside '.tico' directory or Invalid File")
                     continue
                 add_file_to_tracking(filepath, valid_json_files)
     else:
         filepath = args.path
-        if (len(filepath)>6 and filepath[:6] == ".tico"):
+        if (len(filepath)>5 and filepath[:5] == ".tico"):
             print(f"Cannot add files inside '.tico' directory to tracking!")
             return
         add_file_to_tracking(filepath, valid_json_files)
