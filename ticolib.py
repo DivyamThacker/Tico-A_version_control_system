@@ -166,7 +166,8 @@ def add_file_to_tracking(filepath, valid_json_files):
 
                 with open(json_file, "w") as file:
                     json.dump(data, file, indent=4)
-                    print(f"Successfully added '{filepath}'")
+                    if (json_file==".tico/branches/main/index.json"):
+                        print(f"Successfully added '{filepath}'")
 
             except Exception as e:
                 print(f"Error writing to '{json_file}': {e}")
@@ -182,9 +183,15 @@ def cmd_add(args):
         for root, _, files in os.walk(args.path):
             for filename in files:
                 filepath = os.path.join(root, filename)
+                if (len(filepath)>6 and filepath[:6] == ".tico"):
+                    print(f"Adding {filepath} to tracking files Failed because it is inside '.tico' directory")
+                    continue
                 add_file_to_tracking(filepath, valid_json_files)
     else:
         filepath = args.path
+        if (len(filepath)>6 and filepath[:6] == ".tico"):
+            print(f"Cannot add files inside '.tico' directory to tracking!")
+            return
         add_file_to_tracking(filepath, valid_json_files)
 
 argsp = argsubparsers.add_parser("status", help="Check the status of all the files in your directory")    
@@ -294,8 +301,8 @@ class Commit:
             all_file_keys =  list(all_files.keys())
         files = {}    
         for file in all_file_keys:
-            if self.modified_files and file in self.modified_files:
-                continue  # Skip files already in modified_files
+            # if self.modified_files and file in self.modified_files:
+            #     continue  # Skip files already in modified_files
             self.file_hash[file] = all_files[file]
             files[file] = self.read_file(file)
         self.files = files     
@@ -353,8 +360,8 @@ def empty_tracked_files():
  
 def cmd_commit(args):
     modified_files = calculate_status(doPrint=False)[2]
-    if len(modified_files) >0:
-        print("There are modified files whose changes are not tracked, do 'tico add <filename>' to track it.")
+    # if len(modified_files) >0:
+    #     print("There are modified files whose changes are not tracked, do 'tico add <filename>' to track it.")
     calculate_status(deleteFromIndex=True, doPrint=False)
     file_path = ".tico/branches/main/commits.json"
     if not args.messageFlag:

@@ -16,7 +16,7 @@ test*
 
 
 # Build Stuff
-infos.txt
+# infos.txt
 Tico.iss
 TicoSetup.iss
 main.spec

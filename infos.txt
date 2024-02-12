@@ -1,0 +1,9 @@
+Hey, Welcome User ! Tico is a version control system with basic functionalities like Git. Enjoy!!
+
+Note: This is a terminal app, so it won't Run when you Double click it, you need to first locate to tico.exe file and then
+run ./tico.exe to run it.
+
+Also note that you need to give Administrator privileges to the terminal to run this app properly without errors.
+
+[Optional]
+You can add path to tico.exe to your environment variable 'PATH' to run the program as 'tico init' rather than './tico init'
